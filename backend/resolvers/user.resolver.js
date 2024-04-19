@@ -3,7 +3,7 @@ import User from "../models/user.model.js";
 
 export const userResolver = {
   Query: {
-    authUser: async (_, _, context) => {
+    authUser: async (_, __, context) => {
       try {
         const user = context.getUser();
 
@@ -82,7 +82,7 @@ export const userResolver = {
       }
     },
 
-    logout: async (_, { input }, context) => {
+    logout: async (_, __, context) => {
       try {
         await context.logout();
 
