@@ -58,7 +58,7 @@ app.use(passport.session());
 // Set up our Express middleware to handle CORS, body parsing,
 // and our expressMiddleware function.
 app.use(
-  "/",
+  "/graphql",
   cors({
     origin: "http://localhost:3000",
     credentials: true,
@@ -67,7 +67,7 @@ app.use(
   // expressMiddleware accepts the same arguments:
   // an Apollo Server instance and optional configuration options
   expressMiddleware(server, {
-    context: async ({ req, res }) => buildContext({ req }),
+    context: async ({ req, res }) => buildContext({ req, res }),
   })
 );
 

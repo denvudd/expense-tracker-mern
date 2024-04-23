@@ -27,11 +27,13 @@ export const configurePassport = async () => {
   passport.use(
     new GraphQLLocalStrategy(async (username, password, done) => {
       try {
-        const user = User.findOne({ username });
+        const user = await User.findOne({ username });
 
         if (!user) {
           throw new Error("Invalid username or password");
         }
+
+        console.log('USER PASSWORD', user)
 
         const isValidPassword = await bcrypt.compare(password, user.password);
 

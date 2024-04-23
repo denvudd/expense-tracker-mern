@@ -5,7 +5,7 @@ export const userResolver = {
   Query: {
     authUser: async (_, __, context) => {
       try {
-        const user = context.getUser();
+        const user = await context.getUser();
 
         return user;
       } catch (error) {
@@ -28,7 +28,7 @@ export const userResolver = {
   Mutation: {
     signUp: async (_, { input }, context) => {
       try {
-        const { username, name, password } = input;
+        const { username, name, gender, password } = input;
 
         if (!username || !name || !password) {
           throw new Error("All fields are required");
@@ -60,14 +60,16 @@ export const userResolver = {
 
         return newUser;
       } catch (error) {
-        console.error("Error in signUp: ", err);
-        throw new Error(err.message || "Internal server error");
+        console.error("Error in signUp: ", error);
+        throw new Error(error.message || "Internal server error");
       }
     },
 
     login: async (_, { input }, context) => {
       try {
         const { username, password } = input;
+
+        if (!username || !password) throw new Error("All fields are required");
 
         const { user } = await context.authenticate("graphql-local", {
           username,
@@ -76,7 +78,7 @@ export const userResolver = {
 
         await context.login(user);
         return user;
-      } catch (error) {
+      } catch (err) {
         console.error("Error in login:", err);
         throw new Error(err.message || "Internal server error");
       }
@@ -86,19 +88,19 @@ export const userResolver = {
       try {
         await context.logout();
 
-        req.session.destroy((error) => {
+        context.req.session.destroy((error) => {
           if (error) {
             throw new Error(error);
           }
         });
-        req.clearCookies("connect.sid");
+        context.res.clearCookie("connect.sid");
 
         return {
           message: "Logged out successfully",
         };
       } catch (error) {
-        console.error("Error in login:", err);
-        throw new Error(err.message || "Internal server error");
+        console.error("Error in login:", error);
+        throw new Error(error.message || "Internal server error");
       }
     },
   },

@@ -4,27 +4,27 @@ export const transactionResolver = {
   Query: {
     transactions: async (_, __, context) => {
       try {
-        if (context.getUser()) {
+        if (!context.getUser()) {
           throw new Error("Not authorized");
         }
 
-        const userId = await context.getUser()._id;
-        const transactions = await Transaction.find({ userId });
+        const user = await context.getUser();
+        const transactions = await Transaction.find({ userId: user._id });
 
         return transactions;
       } catch (error) {
-        console.error("Error getting transactions:", err);
+        console.error("Error getting transactions:", error);
         throw new Error("Error getting transactions");
       }
     },
 
     transaction: async (_, { transactionId }) => {
       try {
-        const transaction = await Transaction.fingById(transactionId);
+        const transaction = await Transaction.findById(transactionId);
 
         return transaction;
       } catch (error) {
-        console.error("Error getting transactions:", err);
+        console.error("Error getting transactions:", error);
         throw new Error("Error getting transaction");
       }
     },
@@ -32,15 +32,16 @@ export const transactionResolver = {
   Mutation: {
     createTransaction: async (_, { input }, context) => {
       try {
+        const user = await context.getUser();
         const newTransaction = new Transaction({
           ...input,
-          userId: context.getUser()._id,
+          userId: user._id,
         });
 
         await newTransaction.save();
         return newTransaction;
       } catch (error) {
-        console.error("Error getting transactions:", err);
+        console.error("Error getting transactions:", error);
         throw new Error("Error creating transactions");
       }
     },

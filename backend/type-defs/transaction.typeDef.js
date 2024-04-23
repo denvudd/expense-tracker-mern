@@ -5,7 +5,7 @@ export const transactionTypeDef = `#graphql
         description: String!
         paymentType: String!
         category: String!
-        amougn: Float!
+        amount: Float!
         location: String
         date: String!
     }
