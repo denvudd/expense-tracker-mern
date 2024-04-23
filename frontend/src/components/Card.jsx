@@ -76,7 +76,7 @@ const Card = ({ transaction, authUser }) => {
         <div className="flex justify-between items-center">
           <p className="text-xs text-black font-bold">{formattedDate}</p>
           <img
-            src={authUser?.profilePicture}
+            src={authUser?.authUser?.profilePicture}
             className="h-8 w-8 border rounded-full"
             alt=""
           />
