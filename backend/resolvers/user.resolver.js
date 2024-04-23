@@ -1,5 +1,6 @@
 import bcrypt from "bcryptjs";
 import User from "../models/user.model.js";
+import Transaction from "../models/transaction.model.js";
 
 export const userResolver = {
   Query: {
@@ -101,6 +102,18 @@ export const userResolver = {
       } catch (error) {
         console.error("Error in login:", error);
         throw new Error(error.message || "Internal server error");
+      }
+    },
+  },
+  User: {
+    transactions: async (parent) => {
+      try {
+        const transactions = await Transaction.find({ userId: parent._id });
+
+        return transactions;
+      } catch (error) {
+        console.log("Error in user.transactions resolver: ", error);
+        throw new Error(err.message || "Internal server error");
       }
     },
   },
