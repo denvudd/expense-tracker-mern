@@ -28,6 +28,28 @@ export const transactionResolver = {
         throw new Error("Error getting transaction");
       }
     },
+
+    categoryStatistics: async (_, __, context) => {
+      const user = await context.getUser();
+
+      if (!user) throw new Error("Not authorized");
+
+      const transactions = await Transaction.find({ userId: user._id });
+      const categoryMap = {};
+
+      transactions.forEach((transaction) => {
+        if (!categoryMap[transaction.category]) {
+          categoryMap[transaction.category] = 0;
+        }
+
+        categoryMap[transaction.category] += transaction.amount;
+      });
+
+      return Object.entries(categoryMap).map(([category, totalAmount]) => ({
+        category,
+        totalAmount,
+      }));
+    },
   },
   Mutation: {
     createTransaction: async (_, { input }, context) => {
