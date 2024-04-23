@@ -14,14 +14,16 @@ import { buildContext } from "graphql-passport";
 
 import { connectDB } from "./db/connectDB.js";
 import { configurePassport } from "./passport/passport.config.js";
+import cronJob from "./cron.js";
 
 import mergedResolvers from "./resolvers/index.js";
 import mergedTypeDefs from "./type-defs/index.js";
 
 dotenv.config();
 configurePassport();
-const __dirname = path.resolve();
+cronJob.start();
 
+const __dirname = path.resolve();
 const app = express();
 const httpServer = http.createServer(app);
 
