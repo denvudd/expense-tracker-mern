@@ -2,9 +2,6 @@
 
 ![Demo App](https://i.ibb.co/WHyMscm/Screenshot-42.png)
 
-> [!CAUTION]
-> **Unfortunately, there is a delay of 1 minute before the cold start of the application. It's not me but a Render free tier. I can't deploy this app on Vercel because they don't support serverless and has limitations, so I deployed it on Render (because it's free).** 
-
 ## Features:
 -   🌟 Tech stack: MERN (MongoDB, Express.js, React.js, Node.js) + Apollo GraphQL
 -   📝 Type definitions and resolvers for defining GraphQL schema and data fetching logic
